@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2" />
+    <title>Glucoday</title>
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- <script type="text/javascript" charset="utf-8" src="cordova.js"></script> -->
+
+	<script type="text/javascript" charset="utf-8" src="js/jquery-1.10.2.min.js"></script>
+
+	<!-- <script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.3.2.min.js"></script> -->
+	<script type="text/javascript" charset="utf-8" src="js/BlackBerry-JQM-all-1.0.0.min.js"></script>
+
+	<!-- <link rel="stylesheet" type="text/css" href="js/jquery.mobile-1.3.2.min.css"/> -->
+	<link rel="stylesheet" type="text/css" href="js/BlackBerry-JQM-all-1.0.0.min.css"/> 
+
+	<!--      libreria para la base de datos     -->
+	<script type="text/javascript" charset="utf-8" src="js/websql.js"></script>
+
+	<!--      libreria grafica            -->
+	<script type="text/javascript" src="js/jquery.flot.min.js"></script>
+	<!--   fin de la grafica         -->
+
+    <script type="text/javascript" charset="utf-8">
+		//*********************************************************
+		// Espere o Cordova Carregar esto es para la implementacion de phonegap
+		//*********************************************************
+		/*
+document.addEventListener("deviceready", onDeviceReady, false);
+		function onDeviceReady() {
+		    $("#content").html("Hello, World! Demo  JQuery Mobile com PhoneGap 2!");
+
+		}
+*/
+
+
+
+	</script>
+</head>
+
+<body onload="init()">
+
+<!-- ********************* 	Start of first page: #one -->
+<div data-role="page" id="menu">
+
+	<header  data-role="header" data-position="fixed">
+		<h1>Glucoday</h1>
+	</header>
+
+	<div data-role="content" >
+		<p><a href="#datos" data-role="button" data-transition="slidefade">Datos</a></p>
+		<p><a href="#mediciones" data-role="button" data-transition="slidefade">Mediciones</a></p>
+		<p><a href="#historico" id="his" data-role="button" data-transition="slidefade">Historico</a></p>
+		<p><a href="" onclick="poner_tip()"  data-transition="slidefade" data-role="button">Recomendaciones</a></p>
+	<!-- -->
+		<p><a 	style="visibility:hidden"  href="#popup" data-role="button" data-rel="dialog" data-transition="pop" id="alerta">Show page "popup" (as a dialog)</a></p>
+		
+	</div><!-- /content -->
+	<div data-role="footer" data-position="fixed">
+		<div id="action-bar-area" data-role="actionbar">
+			<div data-role="back"></div>
+		</div>
+	</div>
+</div>
+<!-- /page one -->
+
+
+<!-- ********************* Datos-->
+<div data-role="page" id="datos">
+
+	<div data-role="header">
+		<h1>Datos Usuario</h1>
+	</div><!-- /header -->
+
+	<div data-role="content">
+		<center><h2>En este apartado el usuario podra guardar su informcion personal</h2></center>
+
+
+		<!-- <label for="text-valid">Text Validation</label>
+		<input type="text" name="text-input" id="text-valid" data-role="bb-inputvalidator" required="required" pattern="^[A-Za-z]{3}$" placeholder="Input Text..."/> -->
+
+		<div data-role="fieldcontain">
+			<label for="nombre">Nombre</label>
+			<input type="text" name="nombre" id="nombre" placeholder="Ingresa Nombre">
+		</div>
+
+		<div data-role="fieldcontain">
+			<label for="edad">Edad</label>
+			<input type="number" name="edad" id="edad" placeholder="Ingresa Edad">
+		</div>
+
+		<div data-role="fieldcontain">
+			<label for="numero">Numero Alerta</label>
+			<input type="number" name="numero" id="numero" placeholder="Ingresa Num Alerta">
+		</div>
+
+		<label for="tipo" class="select">Tipo De Diabetes</label>
+		<select name="tipo" id="tipo" data-native-menu="false">
+			<option value="tipo1">Diabetes Tipo 1</option>
+			<option value="tipo2">Diabetes Tipo 2</option>
+		</select>
+
+		<label for="sexo">Sexo:</label>
+		<select id="sexo" name="sexo" data-role="slider">
+			<option value="m">M</option>
+			<option value="f">F</option>
+		</select>
+
+		<center>
+			<div data-role="controlgroup" data-type="horizontal">
+				<a href="" onclick="guardarDatos(nombre.value,edad.value,numero.value,tipo.value,sexo.value)" data-role="button">Guardar</a>
+				<a href="#menu" data-role="button">Cancelar</a>
+			</div>
+		</center>
+
+	</div><!-- /content -->
+
+	<div data-role="footer" data-position="fixed">
+			<div id="action-bar-area" data-role="actionbar">
+				<div data-role="back"></div>
+			</div>
+	</div>
+</div><!-- /page two -->
+
+
+<!-- ******************************* Mediciones -->
+<div data-role="page" id="mediciones">
+
+	<div data-role="header">
+		<h1>Mediciones</h1>
+	</div><!-- /header -->
+	
+	<div data-role="content">
+		<div data-role="fieldcontain">
+			<label for="tipo" class="select">En que comida</label>
+			<select name="tipo" id="tipo_comida" data-native-menu="false">
+				<option value="1">Desayuno</option>
+				<option value="2">Comida</option>
+				<option value="3">Cena</option>
+			</select>
+		</div>
+		<!-- slide de la medicion-->
+	    <label for="medicion">Medicion de Glucosa</label>
+		<input name="medicion" id="medicion" data-highlight="true" min="0" max="100" value="50" type="range">
+		
+		<div data-role="fieldcontain">
+	    	<a href="" onclick="guardar_medicion(tipo_comida.value, medicion.value)" data-role="button" data-inline="true">Guardar</a>
+	    	<a href="#menu" data-role="button" data-inline="true" id="cancelando">Cancelar</a>
+		</div>
+	</div><!-- /content -->
+
+	<div data-role="footer" data-position="fixed">
+		<div id="action-bar-area" data-role="actionbar">
+			<div data-role="back"></div>
+		</div>
+	</div>
+</div><!-- /pagina tres -->
+
+<!-- ******************************* historico -->
+<div data-role="page" id="historico">
+
+	<div data-role="header">
+		<h1>Historico</h1>
+	</div><!-- /header -->
+
+	<div data-role="content">
+		<!-- aqui va la grafica -->
+
+		<center><div id="placeholder" style="width:500px;height:300px"></div></center>
+		<br/>
+		<div data-role="fieldcontain">	
+			<label for="inicial">Fecha inicial</label>
+			<input type="date" name="inicial" id="inicial" value=""  />
+		</div>
+		<div data-role="fieldcontain">
+			<label for="final">Fecha final</label>
+			<input type="date" name="final" id="final" value=""  />
+		</div>
+		<a href="" onclick="actualizar_grafica(inicial.value, final.value)" data-role="button" data-inline="true">Graficar</a>
+
+
+	</div><!-- /content -->
+
+	<div data-role="footer" data-position="fixed">
+			<div id="action-bar-area" data-role="actionbar">
+				<div data-role="back"></div>
+			</div>
+	</div>
+</div><!-- /page one -->
+
+<!-- ************************ recomendaciones-->
+	<div data-role="page" id="tips">
+		<div data-role="header">
+			<h1>Recomendaciones</h1>
+		</div>
+		<div data-role="comtent">
+			<div id="tip_pagina"></div>
+		</div>
+		
+		<div data-role="footer" data-position="fixed">
+			<div id="action-bar-area" data-role="actionbar">
+				<div data-role="back"></div>
+		</div>
+	</div>
+	</div>
+
+	<!-- ************************ mensaje de alerta-->
+	<div data-role="page" id="popup" data-theme="b">
+		<div data-role="header">
+			<h1>Recomendaciones</h1>
+		</div>
+		<div data-role="content" data-theme="a" >
+				<h3 class="ui-title">ÀDesea mandar mensaje de alerta?</h3>
+
+				<p>
+				<a href="" 
+				 data-theme="a" data-textonly="false" data-textvisible="true" data-icon="arrow-r" data-iconpos="right"
+
+				onclick="alerta()" data-role="button"  data-inline="true" data-theme="b">Aceptar</a>
+
+				<a href="#menu" 
+				data-theme="a"  data-inline="true" data-role="button">Cancelar</a>
+				</p>
+
+		</div>
+	</div>
+
+
+  <script type="text/javascript">
+    	$(document).ready(function(){
+    		$.plot($("#placeholder"), [ ], { });
+    	});
+    </script>
+</body>
+</html>
